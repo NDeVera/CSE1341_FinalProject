@@ -10,12 +10,12 @@ class SnakeFood {
   }
   
   // Function for the Snake Food
-  void design() {
+  void designFood() {
     fill(255,0,0);
     ellipse(xPos,yPos, 20, 20);
   }
   
-  void spawn() {
+  void spawnFood() {
     xPos = random(200, width-200);
     yPos = random(200, height-200);
   }

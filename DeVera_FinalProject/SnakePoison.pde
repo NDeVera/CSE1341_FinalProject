@@ -14,4 +14,8 @@ class SnakePoison extends SnakeFood {
     ellipse(xPos, yPos, 30, 30);
   }
   
+  void spawn() {
+    super.spawn();
+  }
+  
 }

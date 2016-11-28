@@ -27,6 +27,7 @@ void draw() {
   // (Accidentally) eating the poison for death
   if(dist(Death.yPos,Death.xPos , (Hissy.yPos).get(0),(Hissy.xPos).get(0)) < Hissy.edge) {
    Hissy.foodPoison();
+   Death.spawn();
   }
 
 }

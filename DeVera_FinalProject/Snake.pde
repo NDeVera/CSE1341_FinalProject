@@ -3,20 +3,22 @@ class Snake {
   float edge;
   String facing;
   ArrayList <Float> xPos, yPos;
-  
+
+
   // Constructor for snake class
   Snake() {
-   lngth = 1;
-   edge = 24;
-   facing = "up";
-   xPos = new ArrayList();
-   yPos = new ArrayList();
-   xPos.add(random(width));
-   yPos.add(random(height));
+    lngth = 1;
+    edge = 24;
+    facing = "up";
+    xPos = new ArrayList();
+    yPos = new ArrayList();
+    xPos.add(random(width));
+    yPos.add(random(height));
   }
-  
+
+
   // Functions for snake class
-  
+
   void displaySnake() {
     fill(255);
     for (int i = 0; i < lngth; i++) {
@@ -30,6 +32,8 @@ class Snake {
       xPos.set(i, xPos.get(i-1));
       yPos.set(i, yPos.get(i-1));
     }
+    xPos.set(0, (xPos.get(0) + width) % width);    // using % modulus
+    yPos.set(0, (yPos.get(0) + height) % height);
     if (facing == "up") {
       yPos.set(0, yPos.get(0) - edge);
     }
@@ -43,20 +47,27 @@ class Snake {
       xPos.set(0, xPos.get(0) - edge);
     }
   }
-  
+
   void grow() {
     yPos.add(yPos.get(lngth-1) + edge);
     xPos.add(xPos.get(lngth-1) + edge);
     lngth = lngth + 1;
   }
-  
-  void foodPoison() {
+
+  void rebirth() {
     xPos.clear();
     yPos.clear();
     xPos.add(random(300, width-300));
     yPos.add(random(300, height-300));
     lngth = 1;
   }
-  
-  
+
+  boolean hahaGameOver() {
+    for (int i=1; i < lngth; i++) {
+      if (dist(xPos.get(0), yPos.get(0), xPos.get(i), yPos.get(i)) < edge) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

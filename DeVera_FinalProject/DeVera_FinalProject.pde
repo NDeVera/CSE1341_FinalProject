@@ -11,7 +11,6 @@ AudioPlayer p2;    // for the poison (sickness)
 AudioPlayer p3;    // for hitting itself (dying)
 
 
-
 Snake hissy;
 SnakeFood grub;
 SnakePoison sick;
@@ -43,7 +42,7 @@ void draw() {
     text("[Press any key to restart Hissy's gains]", 25, 400);
   } else {
     // Plays the game
-    background(0,0,255);
+    background(0, 0, 255);
     score();
     if (millis() > time) {
       hissy.motion(); 
@@ -59,6 +58,7 @@ void draw() {
       p.play();
       hissy.grow(); 
       moveFood(grub);
+      p3.rewind();
     }
 
     // (Accidentally) eating the poison for sickness
@@ -68,7 +68,7 @@ void draw() {
       hissy.sickness(); 
       sick.spawn();
     }
-    
+
     // Tracks the gains 
     if (hissy.lngth > bestScore) {
       bestScore = hissy.lngth;
@@ -84,7 +84,7 @@ void score() {
   strokeWeight(2);
   fill(0, 255, 0);
   textSize(22);
-  text( "Top Gains: " + bestScore, width-150, 25);
+  text( "Top Gains: " + bestScore, width-155, 25);
   textSize(12);
   text( "Current Gains: " + hissy.lngth, width-130, 40);
 }
@@ -109,6 +109,7 @@ void moveFood(SnakeFood grub) {
 
 
 void keyPressed() {
+  // Key interaction to move Hissy
   if (key == CODED) {
     if (keyCode == UP) {
       hissy.facing = "up";

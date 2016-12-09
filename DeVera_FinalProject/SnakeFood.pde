@@ -3,10 +3,10 @@ class SnakeFood {
   float yPos;
   
   
-  // Constrsuctor for the Snake Food
+  // COnstructor for the Snake Food
   SnakeFood() {
-    xPos = random(200, width-200);
-    yPos = random(200, height-200);
+    xPos = random(50, width-50);
+    yPos = random(50, height-50);
   }
   
   
@@ -14,14 +14,14 @@ class SnakeFood {
   void design() {
     stroke(241,250,3);
     fill(255,0,0);
-    ellipse(xPos,yPos, 18, 18);
+    ellipse(xPos,yPos, 15, 15);
     fill(241,250,3);
-    ellipse(xPos,yPos,4,4);
+    ellipse(xPos,yPos,3,3);
   }
   
   void spawn() {
-    xPos = random(200, width-200);
-    yPos = random(200, height-200);
+    xPos = random(50, width-50);
+    yPos = random(50, height-50);
   }
   
 }

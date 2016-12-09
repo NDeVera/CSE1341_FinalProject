@@ -2,8 +2,7 @@ class Snake {
   int lngth;
   float edge;
   String facing;
-  ArrayList <Float> xPos, yPos;
-
+  ArrayList <Float> xPos, yPos; // ArrayList was the easiest way to track, add, and remove links of the snake
 
   // Constructor for snake class
   Snake() {
@@ -18,7 +17,6 @@ class Snake {
 
 
   // Functions for snake class
-
   void drawSnake() {
     fill(255);
     for (int i = 0; i < lngth; i++) {
@@ -54,7 +52,7 @@ class Snake {
     lngth = lngth + 1;
   }
 
-  void sickness() {
+  void sickness() {               // If the snake eats the Poison, it loses its link
     float tempX = xPos.get(0);
     float tempY = yPos.get(0);
     xPos.clear();
@@ -75,10 +73,8 @@ class Snake {
   boolean hahaGameOver() {
     for (int i=1; i < lngth; i++) {
       if (dist(xPos.get(0), yPos.get(0), xPos.get(i), yPos.get(i)) < edge) {
-        p3.rewind();
         p3.play();
         return true;
-
       }
     }
     return false;

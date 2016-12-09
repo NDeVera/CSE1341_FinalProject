@@ -5,74 +5,126 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
-// Minim.m;
-// AudioPlayer p;     // for the eating noise
-// AudioPlayer p2;    // for the poison (sickness)
-// AudioPlayer p3;    // for hitting itself
+Minim m;
+AudioPlayer p;     // for eating (burp)
+AudioPlayer p2;    // for the poison (sickness)
+AudioPlayer p3;    // for hitting itself (dying)
 
 
-Snake Hissy;
-SnakeFood Grub;
-SnakePoison Sick;
+
+Snake hissy;
+SnakeFood grub;
+SnakePoison sick;
 int time = 30;
+int bestScore = 0;
 
 void setup() {
-  size(800, 800);
+  size(700, 700);
   frameRate(15);  
-  Hissy = new Snake();
-  Grub = new SnakeFood();
-  Sick = new SnakePoison();
-  // need creation of scoreboard-type tracker
+  hissy = new Snake();
+  grub = new SnakeFood();
+  sick = new SnakePoison();
+  m = new Minim(this);            // sound files
+  p = m.loadFile("burp.wav");
+  p2 = m.loadFile("cough.wav");
+  p3 = m.loadFile("fatality.mp3");
 }
 
 
 void draw() {
   // Draws a message to the player if game is lost
-  if (Hissy.hahaGameOver() == true) {
+  if (hissy.hahaGameOver() == true) {
     background(0);
     fill(255);
     textSize(30);
-    text("Booooo you lost!", 50, 50);
+    text("Booooooooo you lost & Hissy has died!", 50, 300);
+    fill(255, 0, 0);
+    textSize(35);
+    text("[Press any key to restart Hissy's gains]", 25, 400);
   } else {
-    background(0, 0, 255);
+    // Plays the game
+    background(0,0,255);
+    score();
     if (millis() > time) {
-      Hissy.motion(); 
-      Hissy.displaySnake(); 
+      hissy.motion(); 
+      hissy.drawSnake(); 
       time = time + 30;
     } 
-    Grub.design(); 
-    Sick.design();
+    grub.design(); 
+    sick.design();
 
     // Eating the grub for gains
-    if (dist(Grub.yPos, Grub.xPos, (Hissy.yPos).get(0), (Hissy.xPos).get(0)) < Hissy.edge) {
-      Hissy.grow();
-      Grub.spawn();
+    if (dist(grub.yPos, grub.xPos, (hissy.yPos).get(0), (hissy.xPos).get(0)) < hissy.edge) {
+      p.rewind();
+      p.play();
+      hissy.grow(); 
+      moveFood(grub);
     }
-    // (Accidentally) eating the poison for death
-    if (dist(Sick.yPos, Sick.xPos, (Hissy.yPos).get(0), (Hissy.xPos).get(0)) < Hissy.edge) {
-      Hissy.rebirth();
-      Sick.spawn();
+
+    // (Accidentally) eating the poison for sickness
+    if (dist(sick.yPos, sick.xPos, (hissy.yPos).get(0), (hissy.xPos).get(0)) < hissy.edge) {
+      p2.rewind();
+      p2.play();
+      hissy.sickness(); 
+      sick.spawn();
+    }
+    
+    // Tracks the gains 
+    if (hissy.lngth > bestScore) {
+      bestScore = hissy.lngth;
     }
   }
 }
 
+// Function to show the number of gains in the top right hand corner
+void score() {
+  stroke(0, 255, 0);
+  fill(0);
+  rect(width-170, 0, 170, 50);
+  strokeWeight(2);
+  fill(0, 255, 0);
+  textSize(22);
+  text( "Top Gains: " + bestScore, width-150, 25);
+  textSize(12);
+  text( "Current Gains: " + hissy.lngth, width-130, 40);
+}
+
+
+// Function to ensure that the food does not spawn on the snake
+void moveFood(SnakeFood grub) {
+  boolean ok = true;
+  int i = 0;
+  while (i<hissy.lngth && ok) {  
+    if (dist(grub.yPos, grub.xPos, (hissy.yPos).get(0), (hissy.xPos).get(0)) < hissy.edge) {
+      ok = true;
+    }
+    i++;
+  }
+  if (ok) {
+    grub.spawn();
+  } else {
+    moveFood(grub);
+  }
+}
+
+
 void keyPressed() {
   if (key == CODED) {
     if (keyCode == UP) {
-      Hissy.facing = "up";
+      hissy.facing = "up";
     }
     if (keyCode == DOWN) {
-      Hissy.facing = "down";
+      hissy.facing = "down";
     }
     if (keyCode == RIGHT) {
-      Hissy.facing = "right";
+      hissy.facing = "right";
     }
     if (keyCode == LEFT) {
-      Hissy.facing = "left";
+      hissy.facing = "left";
     }
   }
   // Press any key to make the game restart and for Hissy to be reborn
-  if (Hissy.hahaGameOver() == true) {
-    Hissy.rebirth();
+  if (hissy.hahaGameOver() == true) {
+    hissy.rebirth();
   }
 }

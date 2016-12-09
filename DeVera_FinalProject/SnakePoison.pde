@@ -6,14 +6,15 @@ class SnakePoison extends SnakeFood {
   // Constructor for the Snake Poison
   SnakePoison() {
     super();
-    // add functionality to make sure snake food is not spawned in front of snake
   }
   
-
   // Function for the Snake Poison
   void design() {
-    fill(0, 255, 0);
-    ellipse(xPos, yPos, 30, 30);
+    stroke(0);
+    fill(56, 255, 3);
+    ellipse(xPos, yPos, 40, 40);
+    line(xPos-10,yPos-10 , xPos+10,yPos+10);
+    line(xPos-10,yPos+10 , xPos+10,yPos-10);
   }
   
   void spawn() {

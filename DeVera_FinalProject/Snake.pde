@@ -19,20 +19,20 @@ class Snake {
 
   // Functions for snake class
 
-  void displaySnake() {
+  void drawSnake() {
     fill(255);
     for (int i = 0; i < lngth; i++) {
       stroke(0);
       rect(xPos.get(i), yPos.get(i), edge, edge);
     }
   }
-  
+
   void motion() {
     for (int i=lngth-1; i > 0; i=i-1) {      
       xPos.set(i, xPos.get(i-1));
       yPos.set(i, yPos.get(i-1));
     }
-    xPos.set(0, (xPos.get(0) + width) % width);    // using % modulus
+    xPos.set(0, (xPos.get(0) + width) % width);    // using % modulus for remainders to set snake on other side of screen when it "goes off the edge"
     yPos.set(0, (yPos.get(0) + height) % height);
     if (facing == "up") {
       yPos.set(0, yPos.get(0) - edge);
@@ -54,6 +54,16 @@ class Snake {
     lngth = lngth + 1;
   }
 
+  void sickness() {
+    float tempX = xPos.get(0);
+    float tempY = yPos.get(0);
+    xPos.clear();
+    yPos.clear();
+    xPos.add(tempX);
+    yPos.add(tempY);
+    lngth = 1;
+  }
+
   void rebirth() {
     xPos.clear();
     yPos.clear();
@@ -65,7 +75,10 @@ class Snake {
   boolean hahaGameOver() {
     for (int i=1; i < lngth; i++) {
       if (dist(xPos.get(0), yPos.get(0), xPos.get(i), yPos.get(i)) < edge) {
+        p3.rewind();
+        p3.play();
         return true;
+
       }
     }
     return false;
